@@ -25,6 +25,7 @@ exports.registerUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Something went wrong in the registration process",
+      err: error,
     });
   }
 };
@@ -60,6 +61,7 @@ exports.loginUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Something went wrong in the login process",
+      err: error,
     });
   }
 };
@@ -78,5 +80,60 @@ exports.logoutUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Logout Unsuccessfull !",
+      err: error,
+    });
+  }
+};
+
+exports.getUserDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res.status(200).json({
+      success: true,
+      user,
+      message: "User Details !",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Not able to fetch the user details",
+      err: error,
+    });
+  }
+};
+
+exports.updateUserDetails = async (req, res) => {
+  try {
+    const data = {
+      name: req.body.name,
+      email: req.body.email,
+    };
+    const user = await User.findByIdAndUpdate(req.params.id, data, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+
+    return res.status(200).json({
+      success: true,
+      user,
+      message: "User Details Updated Successfully !",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while updating user details",
+      err: error,
+    });
   }
 };
