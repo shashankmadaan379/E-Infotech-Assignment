@@ -29,3 +29,41 @@ exports.registerUser = async (req, res) => {
     console.log(error);
   }
 };
+
+//Login user -- /api/v1/login
+exports.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter all required fields",
+      });
+    }
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid Email or Password",
+      });
+    }
+
+    const isPasswordMatched = await user.matchPassword(password);
+    if (!isPasswordMatched) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid Email or Password",
+      });
+    }
+
+    const token = await user.getJwtToken();
+    return res.status(201).json({
+      success: true,
+      message: "User Login Successfull !",
+      user,
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
