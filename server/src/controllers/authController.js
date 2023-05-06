@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const sendToken = require("../utils/sendToken");
 const bcrypt = require("bcrypt");
-//Register a user --> POST =>/api/v1/registerUser
+//Register a user --> POST -->/api/v1/registerUser
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
