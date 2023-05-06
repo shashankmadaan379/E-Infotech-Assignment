@@ -5,24 +5,27 @@ const {
   JWT_EXPIRES_TIME,
   JWT_ACCESS_TOKEN,
 } = require("../config/serverConfig");
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please enter your name"],
-    maxLength: [30, "Your name cannot exceed 30 characters"],
+const userSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Please enter your name"],
+      maxLength: [30, "Your name cannot exceed 30 characters"],
+    },
+    email: {
+      type: String,
+      required: [true, "Please enter your email"],
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: [true, "Please enter your password"],
+      minlength: [6, "Your password must be longer than 6 characters"],
+      select: false,
+    },
   },
-  email: {
-    type: String,
-    required: [true, "Please enter your email"],
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: [true, "Please enter your password"],
-    minlength: [6, "Your password must be longer than 6 characters"],
-    select: false,
-  },
-});
+  { timestamps: true }
+);
 
 //hashed password
 userSchema.pre("save", async function (next) {
