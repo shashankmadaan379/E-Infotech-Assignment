@@ -18,10 +18,12 @@ exports.registerUser = async (req, res) => {
       });
     }
     const user = await User.create({ name, email, password });
+    const token = await user.getJwtToken();
     return res.status(201).json({
       success: true,
       message: "User Registration Successfull !",
       user,
+      token,
     });
   } catch (error) {
     console.log(error);
