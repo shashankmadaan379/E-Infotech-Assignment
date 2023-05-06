@@ -116,7 +116,7 @@ exports.updateUserDetails = async (req, res) => {
   try {
     const data = {
       name: req.body.name,
-      email: req.body.email,
+      // email: req.body.email,
     };
     const user = await User.findByIdAndUpdate(req.params.id, data, {
       new: true,
@@ -139,4 +139,40 @@ exports.updateUserDetails = async (req, res) => {
   }
 };
 
-exports.updateUserPassword = async (req, res) => {};
+exports.updateUserPassword = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("+password");
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    const isMatchedPassword = await bcrypt.compare(
+      req.body.currentPassword,
+      user.password
+    );
+
+    if (!isMatchedPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Current Password",
+      });
+    }
+    user.password = await bcrypt.hash(req.body.newPassword, 10);
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Password Not Updated !",
+      err: error,
+    });
+  }
+};
