@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const sendToken = require("../utils/sendToken");
 const bcrypt = require("bcrypt");
-//Register a user  =>/api/v1/register
+//Register a user --> POST =>/api/v1/registerUser
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -31,7 +31,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-//Login user -- /api/v1/login
+//Login user --> POST- --> /api/v1/loginUser
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -67,7 +67,7 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-//Logout ---> /api/v1/logout
+//Logout ---> /api/v1/logoutUser
 exports.logoutUser = async (req, res) => {
   try {
     res.cookie("token", null, {
@@ -89,6 +89,7 @@ exports.logoutUser = async (req, res) => {
   }
 };
 
+//Get User Details--> GET ---> /api/v1/getUserDetails/:id
 exports.getUserDetails = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -112,6 +113,7 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
+//Update User Details--> PUT ---> /api/v1/updateUserDetails/:id
 exports.updateUserDetails = async (req, res) => {
   try {
     const data = {
@@ -139,6 +141,7 @@ exports.updateUserDetails = async (req, res) => {
   }
 };
 
+//Update Password --> PUT ---> /api/v1/updateUserPassword/:id
 exports.updateUserPassword = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("+password");
