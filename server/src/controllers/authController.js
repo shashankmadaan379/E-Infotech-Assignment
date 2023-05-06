@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const sendToken = require("../utils/sendToken");
+const bcrypt = require("bcrypt");
 //Register a user  =>/api/v1/register
 exports.registerUser = async (req, res) => {
   try {
@@ -137,3 +138,5 @@ exports.updateUserDetails = async (req, res) => {
     });
   }
 };
+
+exports.updateUserPassword = async (req, res) => {};
