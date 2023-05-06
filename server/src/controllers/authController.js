@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const sendToken = require("../utils/sendToken");
 //Register a user  =>/api/v1/register
 exports.registerUser = async (req, res) => {
   try {
@@ -18,15 +19,13 @@ exports.registerUser = async (req, res) => {
       });
     }
     const user = await User.create({ name, email, password });
-    const token = await user.getJwtToken();
-    return res.status(201).json({
-      success: true,
-      message: "User Registration Successfull !",
-      user,
-      token,
-    });
+    sendToken(user, 200, res, "User Registration Successful !");
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong in the registration process",
+    });
   }
 };
 
@@ -55,13 +54,27 @@ exports.loginUser = async (req, res) => {
         message: "Invalid Email or Password",
       });
     }
+    sendToken(user, 200, res, "User Login Successful !");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong in the login process",
+    });
+  }
+};
 
-    const token = await user.getJwtToken();
-    return res.status(201).json({
+//Logout ---> /api/v1/logout
+exports.logoutUser = async (req, res) => {
+  try {
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    });
+
+    res.status(200).json({
       success: true,
-      message: "User Login Successfull !",
-      user,
-      token,
+      message: "Logged out",
     });
   } catch (error) {
     console.log(error);
