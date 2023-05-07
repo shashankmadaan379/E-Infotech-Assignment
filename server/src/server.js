@@ -19,10 +19,10 @@ const setupAndStartServer = async () => {
     })
   );
   app.use("/api", ApiRoutes);
-  app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Credentials", true);
-    next();
-  });
+  // app.use(function (req, res, next) {
+  //   res.header("Access-Control-Allow-Credentials", true);
+  //   next();
+  // });
 
   app.listen(PORT, () => {
     console.log(`Server started at ${PORT} in ${MODE} Mode`);
