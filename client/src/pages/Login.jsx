@@ -1,5 +1,5 @@
 import React from "react";
-import singupimage from "../assets/image1.jpg";
+import signupimage from "../assets/image1.jpg";
 import { Link } from "react-router-dom";
 const Login = () => {
   const handleSubmit = (event) => {
@@ -43,11 +43,11 @@ const Login = () => {
               </div>
             </form>
             <p className="back-to-home">
-              Back to Home Page <Link to="/">Home</Link>
+              Back to Home Page ? <Link to="/">Home</Link>
             </p>
           </div>
           <div className="modal-right">
-            <img src={singupimage} alt="" />
+            <img src={signupimage} alt="" />
           </div>
         </div>
       </div>

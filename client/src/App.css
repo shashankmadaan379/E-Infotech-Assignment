@@ -181,6 +181,7 @@
 
  .sign-up a {
      color: #0a192f;
+     text-decoration: none;
  }
 
  .input-button {
@@ -256,4 +257,5 @@
 
   .back-to-home a {
       color: #0a192f;
+      text-decoration: none;
   }

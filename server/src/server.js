@@ -4,6 +4,7 @@ const { PORT, MODE } = require("./config/serverConfig");
 const connectDB = require("./config/dbConfig");
 const ApiRoutes = require("./routes/index");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const setupAndStartServer = async () => {
   const app = express();
 
@@ -11,6 +12,7 @@ const setupAndStartServer = async () => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser());
+  app.use(cors());
   app.use("/api", ApiRoutes);
 
   app.listen(PORT, () => {
