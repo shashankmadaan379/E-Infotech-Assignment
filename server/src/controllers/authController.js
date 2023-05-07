@@ -100,7 +100,7 @@ exports.getUserDetails = async (req, res) => {
     }
     res.status(200).json({
       success: true,
-      user,
+      data: user,
       message: "User Details !",
     });
   } catch (error) {
