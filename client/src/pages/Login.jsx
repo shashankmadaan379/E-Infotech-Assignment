@@ -15,9 +15,11 @@ const Login = () => {
         password,
       });
       if (response) {
+        localStorage.setItem("userId", JSON.stringify(response.data.user));
+        localStorage.setItem("token", response.data.token);
         alert("Login Successfull !");
+        navigate("/profile");
       }
-      navigate("/profile");
     } catch (error) {
       console.log(error);
       alert("Login failed, Please try again...");
