@@ -1,14 +1,37 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import singupimage from "../assets/image1.jpg";
+import axios from "axios";
 const Signup = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      const registerUrl = "http://localhost:8000/api/v1/registerUser";
+      const response = await axios.post(registerUrl, {
+        name,
+        email,
+        password,
+      });
+      if (response) {
+        alert("User Registration Successfull !");
+      }
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      alert("Registration failed, Please try again...");
+    }
+  }
   return (
     <div className="container">
       <div className="modal">
         <div className="modal-container">
           <div className="modal-left">
-            <h1 className="modal-title">Welcome!</h1>
-            <form>
+            <h1 className="modal-title">Register</h1>
+            <form onSubmit={handleSubmit}>
               <div className="input-block">
                 <label htmlFor="name" className="input-label">
                   Name
@@ -19,6 +42,8 @@ const Signup = () => {
                   name="name"
                   placeholder="Name"
                   id="name"
+                  onChange={(event) => setName(event.target.value)}
+                  value={name}
                 />
               </div>
               <div className="input-block">
@@ -31,6 +56,8 @@ const Signup = () => {
                   name="email"
                   placeholder="Email"
                   id="email"
+                  onChange={(event) => setEmail(event.target.value)}
+                  value={email}
                 />
               </div>
               <div className="input-block">
@@ -43,6 +70,8 @@ const Signup = () => {
                   name="password"
                   placeholder="Password"
                   id="password"
+                  onChange={(event) => setPassword(event.target.value)}
+                  value={password}
                 />
               </div>
               <div className="modal-buttons">

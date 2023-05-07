@@ -125,6 +125,7 @@
     margin: 0;
     font-weight: 400;
     color: #0a192f;
+    padding-bottom: 10px;
 }
 
 
@@ -259,3 +260,5 @@
       color: #0a192f;
       text-decoration: none;
   }
+
+  
