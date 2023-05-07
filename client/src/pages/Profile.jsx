@@ -64,7 +64,7 @@ const Profile = () => {
       <div>
         <input type="text" value={newName} onChange={handleNameChange} />
         <button className="update-button" onClick={handleUpdateProfile}>
-          Update Profile
+          Update Name
         </button>
       </div>
     </div>
