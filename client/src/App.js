@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import Error from "./pages/Error";
 import "./App.css";
 import PrivateRoute from "./components/PrivateRoute";
+import UpdatePassword from "./pages/UpdatePassword";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<PrivateRoute />} />
         <Route path="/error" element={<Error />} />
+        <Route path="/update" element={<UpdatePassword />} />
       </Routes>
     </>
   );

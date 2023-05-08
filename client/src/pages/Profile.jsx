@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import profile_avatar from "../assets/profile_pic.jpg";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
   const [newName, setNewName] = useState("");
   const userId = JSON.parse(localStorage.getItem("userId"))._id;
-
+  const navigate = useNavigate();
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -34,6 +35,9 @@ const Profile = () => {
     setNewName(event.target.value);
   };
 
+  async function handleUpdatePassword() {
+    navigate("/update");
+  }
   const handleUpdateProfile = async () => {
     try {
       const token = await localStorage.getItem("token");
@@ -65,6 +69,11 @@ const Profile = () => {
         <input type="text" value={newName} onChange={handleNameChange} />
         <button className="update-button" onClick={handleUpdateProfile}>
           Update Name
+        </button>
+        <button
+          className="update-button-password"
+          onClick={handleUpdatePassword}>
+          Update Password
         </button>
       </div>
     </div>
