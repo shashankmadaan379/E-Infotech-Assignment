@@ -363,3 +363,8 @@
 .update-password .update-button:hover {
     background-color: #0a192f;
 }
+
+
+.error-message{
+    color: red;
+}
