@@ -1,54 +1,84 @@
-import React, { useState } from "react";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+export const validationSchema = Yup.object({
+  currentpassword: Yup.string().min(6).required("Please enter your password"),
+  newpassword: Yup.string().min(6).required("Please enter your password"),
+  confirmpassword: Yup.string()
+    .required()
+    .oneOf([Yup.ref("newpassword"), null], "Password must match"),
+});
 
 const UpdatePassword = () => {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  async function handleUpdatePassword() {
+  //   const [currentPassword, setCurrentPassword] = useState("");
+  //   const [newPassword, setNewPassword] = useState("");
+  //   const [confirmPassword, setConfirmPassword] = useState("");
+  const handleUpdatePassword = async (values) => {
     try {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   return (
     <div className="update-password-container">
       <div className="update-password">
         <h2>Update Password</h2>
-        <div>
-          <label htmlFor="current-password">Current Password</label>
-          <input
-            type="password"
-            id="current-password"
-            onChange={(event) => setCurrentPassword(event.target.value)}
-            value={currentPassword}
-          />
-        </div>
-        <div>
-          <label htmlFor="new-password">New Password</label>
-          <input
-            type="password"
-            id="new-password"
-            onChange={(event) => setNewPassword(event.target.value)}
-            value={newPassword}
-          />
-        </div>
-        <div>
-          <label htmlFor="confirm-password">Confirm Password</label>
-          <input
-            type="password"
-            id="confirm-password"
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            value={confirmPassword}
-          />
-        </div>
-        <button
-          className="update-button"
-          onClick={handleUpdatePassword}
-          disabled={
-            !currentPassword || !newPassword || newPassword !== confirmPassword
-          }>
-          Update
-        </button>
+        <Formik
+          initialValues={{
+            currentpassword: "",
+            newpassword: "",
+            confirmpassword: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleUpdatePassword}>
+          {(formik) => (
+            <Form onSubmit={formik.handleUpdatePassword}>
+              <div>
+                <label htmlFor="currentpassword">Current Password</label>
+                <Field
+                  type="password"
+                  id="currentpassword"
+                  name="currentpassword"
+                  className="form-control"
+                />
+                <ErrorMessage
+                  name="currentpassword"
+                  component="div"
+                  className="error-message"
+                />
+              </div>
+              <div>
+                <label htmlFor="newpassword">New Password</label>
+                <Field
+                  type="password"
+                  id="newpassword"
+                  name="newpassword"
+                  className="form-control"
+                />
+                <ErrorMessage
+                  name="newpassword"
+                  component="div"
+                  className="error-message"
+                />
+              </div>
+              <div>
+                <label htmlFor="confirmpassword">Confirm Password</label>
+                <Field
+                  type="password"
+                  id="confirmpassword"
+                  name="confirmpassword"
+                  className="form-control"
+                />
+                <ErrorMessage
+                  name="confirmpassword"
+                  component="div"
+                  className="error-message"
+                />
+              </div>
+              <button className="update-button">Update</button>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );
