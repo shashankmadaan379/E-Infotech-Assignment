@@ -1,22 +1,36 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-export const validationSchema = Yup.object({
-  currentpassword: Yup.string().min(6).required("Please enter your password"),
-  newpassword: Yup.string().min(6).required("Please enter your password"),
-  confirmpassword: Yup.string()
-    .required()
-    .oneOf([Yup.ref("newpassword"), null], "Password must match"),
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+const validationSchema = Yup.object({
+  currentPassword: Yup.string().min(6).required("Please enter your password"),
+  newPassword: Yup.string().min(6).required("Please enter your new password"),
 });
 
 const UpdatePassword = () => {
   //   const [currentPassword, setCurrentPassword] = useState("");
   //   const [newPassword, setNewPassword] = useState("");
   //   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
   const handleUpdatePassword = async (values) => {
     try {
+      const userId = JSON.parse(localStorage.getItem("userId"))._id;
+      const response = await axios.put(
+        `http://localhost:8000/api/v1/updateUserPassword/${String(userId)}`,
+        {
+          currentPassword: values.currentPassword,
+          newPassword: values.newPassword,
+        }
+      );
+
+      if (response) {
+        alert("Password Updated Successfully");
+        navigate("/profile");
+      }
     } catch (error) {
       console.log(error);
+      alert("Password Not Updated, Please try again...");
     }
   };
   return (
@@ -25,60 +39,57 @@ const UpdatePassword = () => {
         <h2>Update Password</h2>
         <Formik
           initialValues={{
-            currentpassword: "",
-            newpassword: "",
-            confirmpassword: "",
+            currentPassword: "",
+            newPassword: "",
           }}
           validationSchema={validationSchema}
           onSubmit={handleUpdatePassword}>
           {(formik) => (
-            <Form onSubmit={formik.handleUpdatePassword}>
+            <Form onSubmit={formik.handleSubmit}>
               <div>
-                <label htmlFor="currentpassword">Current Password</label>
+                <label htmlFor="currentPassword">Current Password</label>
                 <Field
                   type="password"
-                  id="currentpassword"
-                  name="currentpassword"
+                  id="currentPassword"
+                  name="currentPassword"
                   className="form-control"
+                  placeholder="Current Password"
                 />
                 <ErrorMessage
-                  name="currentpassword"
+                  name="currentPassword"
                   component="div"
                   className="error-message"
                 />
               </div>
               <div>
-                <label htmlFor="newpassword">New Password</label>
+                <label htmlFor="newPassword">New Password</label>
                 <Field
                   type="password"
-                  id="newpassword"
-                  name="newpassword"
+                  id="newPassword"
+                  name="newPassword"
                   className="form-control"
+                  placeholder="New Password"
                 />
                 <ErrorMessage
-                  name="newpassword"
+                  name="newPassword"
                   component="div"
                   className="error-message"
                 />
               </div>
               <div>
-                <label htmlFor="confirmpassword">Confirm Password</label>
-                <Field
-                  type="password"
-                  id="confirmpassword"
-                  name="confirmpassword"
-                  className="form-control"
-                />
-                <ErrorMessage
-                  name="confirmpassword"
-                  component="div"
-                  className="error-message"
-                />
+                <button
+                  type="submit"
+                  className="update-button"
+                  onClick={formik.handleUpdatePassword}>
+                  Update
+                </button>
               </div>
-              <button className="update-button">Update</button>
             </Form>
           )}
         </Formik>
+        <p className="back-to-profile">
+          Back to Profile Page ? <Link to="/profile">Profile</Link>
+        </p>
       </div>
     </div>
   );

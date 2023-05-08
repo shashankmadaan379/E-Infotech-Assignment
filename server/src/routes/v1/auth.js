@@ -15,5 +15,5 @@ router.post("/loginUser", loginUser);
 router.get("/logoutUser", logoutUser);
 router.get("/getUserDetails/:id", getUserDetails);
 router.put("/updateUserDetails/:id", updateUserDetails);
-router.put("/updateUserPassword/:id", isAuthenticatedUser, updateUserPassword);
+router.put("/updateUserPassword/:id", updateUserPassword);
 module.exports = router;
